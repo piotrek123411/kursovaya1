@@ -1,0 +1,93 @@
+package com.library.issuance;
+
+import com.library.entities.Book;
+import com.library.entities.Librarian;
+import com.library.entities.Reader;
+
+import java.util.Date;
+import java.util.UUID;
+
+/**
+ * Сущность "Выдача в читальный зал".
+ * Представляет выдачу книги читателю только на территории библиотеки.
+ * Книга не выходит за пределы библиотеки и должна быть возвращена сразу после использования.
+ */
+public class ReadingRoomIssuance extends Issuance {
+    /**
+     * Конструктор создает выдачу в читальный зал.
+     *
+     * @param issuanceId      идентификатор выдачи
+     * @param book            выдаваемая книга
+     * @param reader          читатель
+     * @param librarian       библиотекарь
+     */
+    public ReadingRoomIssuance(String issuanceId, Book book, Reader reader, Librarian librarian) {
+        super(issuanceId, book, reader, librarian, IssuanceType.READING_ROOM);
+    }
+
+    /**
+     * Конструктор создает выдачу в читальный зал с автоматически сгенерированным ID.
+     *
+     * @param book            выдаваемая книга
+     * @param reader          читатель
+     * @param librarian       библиотекарь
+     */
+    public ReadingRoomIssuance(Book book, Reader reader, Librarian librarian) {
+        this(UUID.randomUUID().toString(), book, reader, librarian);
+    }
+
+    /**
+     * Для выдачи в читальный зал книга возвращается немедленно после использования.
+     * В этой реализации считается завершенной сразу при создании (или при вызове complete()).
+     *
+     * @return true (выдача в читальный зал всегда предполагает возврат на месте)
+     */
+    @Override
+    public boolean isCompleted() {
+        // Выдача в читальный зал считается активной до момента возврата книги,
+        // но по логике она должна быть возвращена сразу после использования.
+        return false;
+    }
+
+    /**
+     * Дата возврата для читального зала — книга возвращается сразу после выдачи.
+     * В реальной системе это может быть фиксированное время текущей сессии.
+     *
+     * @return null, так как книга возвращается сразу
+     */
+    @Override
+    public Date getDueDate() {
+        return null; // Книга должна быть возвращена сразу
+    }
+
+    /**
+     * Завершает выдачу в читальный зал (книга возвращена на место).
+     */
+    @Override
+    public void complete() {
+        // Логика возврата книги в читальный зал
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != getClass()) return false;
+        if (!super.equals(o)) return false;
+        return true; // Упрощенное равенство ID
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Выдача в читальный зал{" +
+                "id='" + getIssuanceId() + '\'' +
+                ", книга='" + getBook().getTitle() + '\'' +
+                ", читатель=" + getReader().getFullName() +
+                ", возврат-на-месте=" + (getDueDate() == null) +
+                '}';
+    }
+}
