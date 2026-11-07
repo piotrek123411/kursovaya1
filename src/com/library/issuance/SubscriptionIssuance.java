@@ -14,7 +14,7 @@ import java.util.UUID;
  * После истечения срока книгу необходимо вернуть в библиотеку.
  */
 public class SubscriptionIssuance extends Issuance {
-    private final int loanDurationDays; // срок 대여 в днях
+    private final int loanDurationDays; // срок пользования в днях
     private final Date dueDate; // срок возврата
 
     /**
@@ -57,18 +57,6 @@ public class SubscriptionIssuance extends Issuance {
     }
 
     /**
-     * Возвращает срок пользования книгой в днях.
-     *
-     * @return количество дней
-     */
-    @Override
-    public boolean isCompleted() {
-        // Выдача считается завершенной только при явном возврате,
-        // но мы можем проверить истек ли срок.
-        return new Date().after(dueDate) || new Date().equals(dueDate);
-    }
-
-    /**
      * Возвращает дату, к которой книга должна быть возвращена.
      *
      * @return дата возврата
@@ -76,16 +64,6 @@ public class SubscriptionIssuance extends Issuance {
     @Override
     public Date getDueDate() {
         return dueDate;
-    }
-
-    /**
-     * Завершает выдачу (отмечает как возвращенную).
-     * В реальной системе могли бы обновлять статус книги и записывать возврат.
-     */
-    @Override
-    public void complete() {
-        // Логика завершения выдачи — в данной реализации
-        // просто помечаем как завершенную (истекший срок считается завершенным)
     }
 
     /**

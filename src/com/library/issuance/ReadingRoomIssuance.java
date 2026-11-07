@@ -37,19 +37,6 @@ public class ReadingRoomIssuance extends Issuance {
     }
 
     /**
-     * Для выдачи в читальный зал книга возвращается немедленно после использования.
-     * В этой реализации считается завершенной сразу при создании (или при вызове complete()).
-     *
-     * @return true (выдача в читальный зал всегда предполагает возврат на месте)
-     */
-    @Override
-    public boolean isCompleted() {
-        // Выдача в читальный зал считается активной до момента возврата книги,
-        // но по логике она должна быть возвращена сразу после использования.
-        return false;
-    }
-
-    /**
      * Дата возврата для читального зала — книга возвращается сразу после выдачи.
      * В реальной системе это может быть фиксированное время текущей сессии.
      *
@@ -58,14 +45,6 @@ public class ReadingRoomIssuance extends Issuance {
     @Override
     public Date getDueDate() {
         return null; // Книга должна быть возвращена сразу
-    }
-
-    /**
-     * Завершает выдачу в читальный зал (книга возвращена на место).
-     */
-    @Override
-    public void complete() {
-        // Логика возврата книги в читальный зал
     }
 
     @Override
@@ -88,6 +67,7 @@ public class ReadingRoomIssuance extends Issuance {
                 ", книга='" + getBook().getTitle() + '\'' +
                 ", читатель=" + getReader().getFullName() +
                 ", возврат-на-месте=" + (getDueDate() == null) +
+                ", завершена=" + isCompleted() +
                 '}';
     }
 }

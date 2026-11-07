@@ -97,6 +97,7 @@ public class Library {
                 .filter(x -> x.getIssuanceId().equals(issuanceId))
                 .findFirst()
                 .orElseThrow(() -> new InvalidInputException("Выдача с id " + issuanceId + " не найдена"));
+        if (i.isCompleted()) throw new InvalidInputException("Книга по выдаче " + issuanceId + " уже возвращена");
         i.complete();
         Book b = i.getBook();
         b.setStatus(BookStatus.AVAILABLE);
@@ -118,7 +119,7 @@ public class Library {
         System.out.println("5. Оформить заказ на книгу");
         System.out.println("6. Выдать книгу читателю");
         System.out.println("7. Вернуть книгу");
-        System.out.println("8. Выход");
+        System.out.println("0. Выход");
         System.out.print("Ваш выбор: ");
     }
 }

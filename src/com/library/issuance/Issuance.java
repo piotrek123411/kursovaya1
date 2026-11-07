@@ -19,6 +19,7 @@ public abstract class Issuance {
     private final Librarian librarian;
     private final Date issuanceDate;
     private final IssuanceType type;
+    private boolean completed;
 
     /**
      * Конструктор создает запись о выдаче.
@@ -97,7 +98,9 @@ public abstract class Issuance {
      *
      * @return true если выдача завершена
      */
-    public abstract boolean isCompleted();
+    public boolean isCompleted() {
+        return completed;
+    }
 
     /**
      * Возвращает дату, когда книга должна быть возвращена.
@@ -108,9 +111,10 @@ public abstract class Issuance {
 
     /**
      * Завершает выдачу (возврат книги).
-     * Подклассы должны реализовать специфичную логику возврата.
      */
-    public abstract void complete();
+    public void complete() {
+        this.completed = true;
+    }
 
     @Override
     public boolean equals(Object o) {
